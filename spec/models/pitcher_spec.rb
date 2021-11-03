@@ -73,5 +73,26 @@ RSpec.describe Pitcher, type: :model do
       Pitcher.create(player_id: 'jusaburo', year_id: 2001, wins: 18)
       expect(Pitcher.top_ten(2000)).to eq []
     end
+
+    it "most_winner_in_the_teamメソッド使用時、チーム内で最多勝投手が一人の場合" do
+      Pitcher.create(player_id: 'taro', year_id: 2000, team_id: 'DK1', wins: 8)
+      Pitcher.create(player_id: 'jiro', year_id: 2000,team_id: 'DK1', wins: 9)
+      Pitcher.create(player_id: 'saburo', year_id: 2000,team_id: 'DK1', wins: 10)
+      Pitcher.create(player_id: 'siro', year_id: 2001,team_id: 'ST1', wins: 10)
+      expect(Pitcher.most_winner_in_the_team(2000, 'DK1')).to eq ["saburo"]
+    end
+
+    it "most_winner_in_the_teamメソッド使用時、チーム内で最多勝投手が複数人の場合" do
+      Pitcher.create(player_id: 'taro', year_id: 2000, team_id: 'DK1', wins: 8)
+      Pitcher.create(player_id: 'jiro', year_id: 2000, team_id: 'DK1', wins: 10)
+      Pitcher.create(player_id: 'saburo', year_id: 2000, team_id: 'DK1', wins: 10)
+      Pitcher.create(player_id: 'siro', year_id: 2001, team_id: 'ST1', wins: 10)
+      expect(Pitcher.most_winner_in_the_team(2000, 'DK1')).to eq ["jiro","saburo"]
+    end
+
+    it "most_winner_in_the_teamメソッド使用時、チーム内で指定した年のデータが存在しない場合" do
+      Pitcher.create(player_id: 'siro', year_id: 2001, team_id: 'DK1', wins: 10)
+      expect(Pitcher.most_winner_in_the_team(2000, 'DK1')).to eq []
+    end
   end
 end
