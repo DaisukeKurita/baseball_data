@@ -25,4 +25,9 @@ class Pitcher < ApplicationRecord
     # else
     #   pitchers.limit(10).pluck(:player_id)
     # end
+
+    # ある年にあるチームの中でもっとも勝利したピッチャーのplayer_idを配列で取得するメソッドを記述
+    def self.most_winner_in_the_team(year, team)
+      where(team_id: team).most_winners(year)
+    end
 end
